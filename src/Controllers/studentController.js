@@ -100,6 +100,7 @@ exports.updateElement = async (req, res) => {
     const id = new mongoose.Types.ObjectId(req.params.id);
     const query = { _id: id };
     const reqbody = req.body;
+    console.log(reqbody);
 
     try {
         const data = await studentDetails.updateOne(query, reqbody);
