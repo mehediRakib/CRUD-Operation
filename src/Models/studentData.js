@@ -5,8 +5,26 @@ const dataSchema=mongoose.Schema(
         name: String,
         Dept: String,
         city: String,
-        contact: Number,
-        StuID: Number,
+        //custom validation process
+        contact:{
+            type:String,
+            validate:{
+                validator:function (value){
+                    if(value.length===11){
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            },
+            message:"11 digit number required"
+        },
+        StuID:{
+            type:Number,
+        min:[6,'min 6 and maximum 100, but got {value}'],
+            max:[100,'min 6 max 100 but got the {value}']
+        },
         UniversityName: String
     },
     {
