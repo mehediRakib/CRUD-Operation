@@ -92,6 +92,23 @@ exports.getallData=async (req,res)=> {
 }
 
 
+//_________________Read operation using find method____________________//
+exports.readOperation=async (req,res)=>
+{
+    const query={};
+    const projection="name Dept city contact";
+    const data=await studentDetails.find(query,projection)
+        if(data){
+            res.status(200).json({status:'successs',data:data,})
+
+        }
+        else {
+            res.status(200).json({status:'error',error:error.toString()})
+        }
+}
+
+
+
 
 
 //!____________Update Operation_______________!///
@@ -122,6 +139,26 @@ exports.updateElement = async (req, res) => {
 };
 
 
+//________________Update data____________________!//
+exports.updateData=async (req,res)=>{
+    const id=req.params.id;
+    const query={_id:id};
+    const body=req.body;
+    const data=await studentDetails.updateOne(query,body)
+        if(data){
+            res.status(200).json({
+                status:'success',data:data
+            })
+        }
+        else{
+            res.status(404).json({
+                status:404,
+                message:"please try again"
+            })
+        }
+}
+
+
 
 
 //!______________Delete Operation__________!//
@@ -147,6 +184,25 @@ exports.deleteElement=async (req,res)=>{
                 error:e.toString()
             }
         )
+    }
+}
+
+//! Delete Operatoin___________________!//
+exports.deletedata=async (req,res)=>{
+    const id=req.params.id;
+    const query={_id:id};
+    const data=await studentDetails.deleteOne(query)
+    if(data) {
+        res.status(200).json({
+            status: "data deletion successful",
+            data: data,
+        })
+    }else
+    {
+        res.status(404).json({
+            status: "error",
+            data:error.toString(),
+        })
     }
 }
 
