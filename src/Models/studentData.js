@@ -20,6 +20,7 @@ const dataSchema=mongoose.Schema(
             },
             message:"11 digit number required"
         },
+
         StuID:{
             type:Number,
         min:[6,'min 6 and maximum 100, but got {value}'],
