@@ -6,19 +6,32 @@ const dataSchema=mongoose.Schema(
         Dept: String,
         city: String,
         //custom validation process
+        // contact:{
+        //     type:String,
+        //     validate:{
+        //         validator:function (value){
+        //             if(value.length===11){
+        //                 return true;
+        //             }
+        //             else {
+        //                 return false;
+        //             }
+        //         }
+        //     },
+        //     message:"11 digit number required"
+        // },
+
+        //regular expression
         contact:{
             type:String,
             validate:{
                 validator:function (value){
-                    if(value.length===11){
-                        return true;
-                    }
-                    else {
-                        return false;
-                    }
+                    return /^(?:\+88|88)?(01[3-9]\d{8})$/.test(value)
                 }
+
             },
-            message:"11 digit number required"
+            message:"11 digit number required",
+
         },
 
         StuID:{
