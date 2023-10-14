@@ -222,21 +222,21 @@ exports.deleteElement=async (req,res)=>{
 }
 
 //! Delete Operatoin___________________!//
-exports.deletedata=async (req,res)=>{
-    const id=req.params.id;
-    const query={_id:id};
-    const data=await studentDetails.deleteOne(query)
-    if(data) {
-        res.status(200).json({
-            status: "data deletion successful",
-            data: data,
-        })
-    }else
-    {
-        res.status(404).json({
-            status: "error",
-            data:error.toString(),
-        })
-    }
-}
+// exports.deletedata=async (req,res)=>{
+//     const id=req.params.id;
+//     const query={_id:id};
+//     const data=await studentDetails.deleteOne(query)
+//     if(data) {
+//         res.status(200).json({
+//             status: "data deletion successful",
+//             data: data,
+//         })
+//     }else
+//     {
+//         res.status(404).json({
+//             status: "error",
+//             data:error.toString(),
+//         })
+//     }
+// }
 

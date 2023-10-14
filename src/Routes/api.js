@@ -28,7 +28,7 @@ router.get('/readallData',AuthverifyMiddeleware,controller.readOperation);
 
 router.delete('/deleteOne/:id',controller.deleteElement);
 
-router.get('/deletedata/:id',controller.deletedata);
+// router.get('/deletedata/:id',controller.deletedata);
 
 
 //!________________Updata data________________!//
