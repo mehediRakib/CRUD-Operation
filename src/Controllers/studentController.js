@@ -1,5 +1,6 @@
-const studentDetails=require('../Models/studentData');
+const studentDetails=require('../Models/StudentsModel');
 const mongoose = require("mongoose");
+const jwt=require('jsonwebtoken')
 
 exports.insertData=async (req,res)=>{
     try{
@@ -16,6 +17,33 @@ exports.insertData=async (req,res)=>{
         })
 
     }
+}
+
+
+//login
+exports.login=async (req,res)=>{
+    const reqbody=req.body;
+    try {
+        const result = await studentDetails.find(reqbody).count();
+        if (result === 1) {
+            //login success
+            // create JWT token
+            let payload = {
+                exp: Math.floor(Date.now() / 1000 + (24 * 60 * 60)),
+                data: reqbody['email']
+            }
+            let token = jwt.sign(payload, "secretkey123");
+            res.status(200).json({status: 'success', data: token});
+        }
+        else{
+            //login fail
+            res.status(404).json({status:'fail',data:"No user found"});
+        }
+    }catch (e) {
+        //login fail
+        res.status(404).json({status:'fail',error:e.toString(),});
+    }
+
 }
 
 //Read operation
@@ -39,72 +67,78 @@ exports.insertData=async (req,res)=>{
 
 //!___________Single DATA READ OPERATION_______________!//
 
-exports.singleDataRead=async (req,res)=>{
-    const id=new mongoose.Types.ObjectId(req.params.id);
-
-    try{
-        const data=await studentDetails.aggregate([
-            {$match:{_id:id}}
-        ]);
-        res.status(200).json({
-            status:200,
-            data:data
-        })
-
-    }catch (e){
-        res.status(400).json({
-            status:400,
-            data:e.toString()
-        })
-    }
-}
-
+// exports.singleDataRead=async (req,res)=>{
+//     const id=new mongoose.Types.ObjectId(req.params.id);
+//
+//     try{
+//         const data=await studentDetails.aggregate([
+//             {$match:{_id:id}}
+//         ]);
+//         res.status(200).json({
+//             status:200,
+//             data:data
+//         })
+//
+//     }catch (e){
+//         res.status(400).json({
+//             status:400,
+//             data:e.toString()
+//         })
+//     }
+// }
+//
 
 
 
 
 //!______Read All Data_________//
 
-exports.getallData=async (req,res)=> {
-    try {
-        let data = await studentDetails.aggregate([
-            {
-                $project: {
-                    // _id:0,
-                    name: 1,
-                    Dept: 1,
-                    city: 1,
-                    contact: 1,
-                }
-            }
-        ])
-        res.status(200).json({
-            status: 'success',
-            data: data
-        })
-
-    } catch (e) {
-        res.status(400).json({
-            status: 'fail',
-            data:e.toString()
-        })
-    }
-}
+// exports.getallData=async (req,res)=> {
+//     try {
+//         let data = await studentDetails.aggregate([
+//             {
+//                 $project: {
+//                     // _id:0,
+//                     name: 1,
+//                     Dept: 1,
+//                     city: 1,
+//                     contact: 1,
+//                 }
+//             }
+//         ])
+//         res.status(200).json({
+//             status: 'success',
+//             data: data
+//         })
+//
+//     } catch (e) {
+//         res.status(400).json({
+//             status: 'fail',
+//             data:e.toString()
+//         })
+//     }
+// }
 
 
 //_________________Read operation using find method____________________//
 exports.readOperation=async (req,res)=>
 {
-    const query={};
-    const projection="name Dept city contact";
-    const data=await studentDetails.find(query,projection)
-        if(data){
-            res.status(200).json({status:'successs',data:data,})
 
+    try {
+
+        const query = {};
+        const projection = "name Dept city contact";
+        const data = await studentDetails.find(query, projection)
+        if (data) {
+            res.status(200).json({status: 'successs', data: data})
+
+        } else {
+            res.status(200).json({status: 'error', data:"unauthorized"})
         }
-        else {
-            res.status(200).json({status:'error',error:error.toString()})
-        }
+    }
+    catch (e) {
+        res.status(200).json({status: 'fail', error:e.toString()});
+    }
 }
 
 
@@ -140,23 +174,23 @@ exports.updateElement = async (req, res) => {
 
 
 //________________Update data____________________!//
-exports.updateData=async (req,res)=>{
-    const id=req.params.id;
-    const query={_id:id};
-    const body=req.body;
-    const data=await studentDetails.updateOne(query,body)
-        if(data){
-            res.status(200).json({
-                status:'success',data:data
-            })
-        }
-        else{
-            res.status(404).json({
-                status:404,
-                message:"please try again"
-            })
-        }
-}
+// exports.updateData=async (req,res)=>{
+//     const id=req.params.id;
+//     const query={_id:id};
+//     const body=req.body;
+//     const data=await studentDetails.updateOne(query,body)
+//         if(data){
+//             res.status(200).json({
+//                 status:'success',data:data
+//             })
+//         }
+//         else{
+//             res.status(404).json({
+//                 status:404,
+//                 message:"please try again"
+//             })
+//         }
+// }
 
 
 
